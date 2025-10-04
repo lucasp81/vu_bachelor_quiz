@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VU History BA - Find Your Path</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0077B3 0%, #005a87 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: #0077B3;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .intro-text { line-height: 1.8; color: #333; }
+        .btn-primary {
+            background: #0077B3;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 30px auto;
+        }
+        .btn-primary:hover {
+            background: #005a87;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 119, 179, 0.4);
+        }
+        .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+        .progress-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #0077B3 0%, #005a87 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+        .progress-text { text-align: center; color: #64748b; margin-bottom: 20px; font-size: 14px; }
+        .question-title { font-size: 22px; color: #0077B3; margin-bottom: 10px; }
+        .question-instruction { color: #64748b; margin-bottom: 25px; font-style: italic; }
+        .option {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover { border-color: #0077B3; background: #f1f5f9; }
+        .ranking-option { display: flex; align-items: center; gap: 15px; }
+        .ranking-option select {
+            padding: 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 16px;
+            min-width: 60px;
+        }
+        .ternary-option { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .ternary-text { flex: 1; min-width: 200px; margin-bottom: 10px; }
+        .ternary-buttons { display: flex; gap: 10px; }
+        .ternary-btn {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+        .ternary-btn:hover { border-color: #0077B3; }
+        .ternary-btn.active { background: #0077B3; color: white; border-color: #0077B3; }
+        .did-you-know {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+            display: none;
+        }
+        .did-you-know.show { display: block; animation: slideIn 0.5s; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .navigation { display: flex; justify-content: space-between; margin-top: 30px; }
+        .btn-secondary {
+            background: #94a3b8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover { background: #64748b; }
+        .results-container { display: none; }
+        .results-container.active { display: block; }
+        .results-header {
+            background: linear-gradient(135deg, #0077B3 0%, #005a87 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .results-section { margin: 30px 0; }
+        .results-section h3 { color: #0077B3; font-size: 22px; margin-bottom: 15px; }
+        .course-card {
+            background: #f8fafc;
+            border-left: 4px solid #0077B3;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .highlight-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        .info-box { background: #e0e7ff; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .next-steps { background: #f1f5f9; padding: 30px; border-radius: 8px; margin-top: 40px; }
+        @media (max-width: 600px) {
+            .content { padding: 20px; }
+            .header h1 { font-size: 22px; }
+            .question-title { font-size: 18px; }
+            .ternary-option { flex-direction: column; align-items: flex-start; }
+            .ternary-buttons { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Find Your Path in History at VU Amsterdam</h1>
+        </div>
+        <div class="content">
+            <div id="intro-screen">
+                <div class="intro-text">
+                    <p style="font-size: 20px; margin-bottom: 12px; font-weight: 600; color: #0d1b2a; line-height: 1.4;">History isn't just about understanding the past—it's essential for navigating the present.</p>
+                    <p style="font-size: 17px; margin-bottom: 20px; line-height: 1.7; color: #334155;">At VU Amsterdam, we examine all world regions through their interconnections, offering long-term perspectives on today's urgent challenges: inequality, democratic fragility, migration, climate change, and colonial legacies.</p>
+                    <p style="font-size: 17px; margin-bottom: 25px; line-height: 1.7; color: #334155;">We train you to become an engaged historian who thinks independently, giving you the historical and moral context to understand contemporary debates.</p>
+                    <p style="font-size: 18px; margin-bottom: 15px; font-weight: 600; color: #0077B3; line-height: 1.4;">Which path is right for you? Take this quiz to discover your ideal track, recommended courses, and potential research directions.</p>
+                </div>
+                <button class="btn-primary" onclick="startQuiz()">START QUIZ</button>
+            </div>
+            <div id="quiz-screen" style="display: none;">
+                <div class="progress-text" id="progress-text">Question 1 of 5</div>
+                <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                <div id="questions-container"></div>
+                <div class="navigation">
+                    <button class="btn-secondary" id="back-btn" onclick="previousQuestion()" style="display: none;">Back</button>
+                    <button class="btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+                </div>
+            </div>
+            <div id="results-screen" class="results-container"></div>
+        </div>
+    </div>
+    <script>
+        let currentQuestion=0,userAnswers=[],scores={region_netherlands_westeurope:0,region_mediterranean_easteurope:0,region_asia:0,region_latin_america:0,region_subsaharan_africa:0,region_maghreb_middle_east:0,theme_religion:0,theme_colonial:0,theme_ancient:0,dutch_language:0,english_language:0};
+        const electives={asia:{name:'Asia Electives',desc:'Choose Global Southeast Asia or China in Modern History'},latin_america:{name:'Latin America in Modern History',desc:'State building, migration, revolutionary movements (1780s-present)'},subsaharan_africa:{name:'Sub-Saharan Africa 1800-present',desc:'Slavery, colonialism, and post-independence challenges'},maghreb:{name:'The Maghreb in Global History',desc:'North Africa: colonialism, nationalism, migration'},middle_east:{name:'The Middle East in Contemporary History',desc:'Religion, colonialism, conflict (Palestine, Iran)'}};
+        const questions=[{type:'ternary',title:'Which topics spark your curiosity?',instruction:'For each topic, select: Very Interested / Somewhat / Not Really',options:[{text:'How empires rose and fell, and wars reshaped borders',subtext:'The Roman Empire, Napoleon, World Wars, the Cold War',keys:{very:{region_netherlands_westeurope:2,region_mediterranean_easteurope:1,dutch_language:1},somewhat:{region_netherlands_westeurope:1},not:{}}},{text:'Daily life, beliefs, and traditions in different societies',subtext:'Medieval guilds, Islamic Golden Age, samurai culture, family structures',keys:{very:{region_asia:2,region_mediterranean_easteurope:1,english_language:1},somewhat:{region_asia:1,english_language:1},not:{}}},{text:'Migration, trade routes, and how distant places connected',subtext:'Silk Road, Atlantic slave trade, diaspora communities, refugees',keys:{very:{english_language:3,region_maghreb_middle_east:1,region_asia:1,region_subsaharan_africa:1},somewhat:{english_language:1},not:{}}},{text:'Revolutions, independence movements, and struggles for rights',subtext:'French Revolution, decolonization in Africa and Asia, civil rights',keys:{very:{region_latin_america:2,region_subsaharan_africa:2,english_language:1},somewhat:{region_latin_america:1},not:{}}},{text:'Ancient civilizations: Greece, Rome, Egypt, Mesopotamia',subtext:'Democracy\'s origins, pyramids, cuneiform writing, gladiators',keys:{very:{theme_ancient:5,region_mediterranean_easteurope:1},somewhat:{theme_ancient:2},not:{}}},{text:'Understanding today\'s conflicts through their historical roots',subtext:'Why does inequality exist? How did borders form? Colonial legacies',keys:{very:{english_language:3,theme_colonial:1},somewhat:{english_language:1},not:{}}}],snippet:'<strong>Did you know?</strong> In 2021, our BA programme was the second highest-rated History programme in the Netherlands. VU is also the only university in Amsterdam offering a full English-taught History BA. You\'ll study in small seminars (15-20 students) with internationally recognized faculty from around the world.'},{type:'ternary',title:'How interested are you in studying these regions?',instruction:'For each region, select: Very Interested / Somewhat / Not Really',options:[{text:'The Netherlands and Western Europe',subtext:'Dutch Golden Age, WWII and Nazi occupation, European integration, colonialism',keys:{very:{region_netherlands_westeurope:4,dutch_language:2},somewhat:{region_netherlands_westeurope:2,dutch_language:1},not:{}}},{text:'Mediterranean and Eastern Europe',subtext:'Ancient Greece and Rome, Byzantine Empire, Ottoman Empire, Cold War',keys:{very:{region_mediterranean_easteurope:4,dutch_language:1},somewhat:{region_mediterranean_easteurope:2},not:{}}},{text:'East and Southeast Asia',subtext:'China\'s dynasties, Japan\'s modernization, colonial Indonesia, Vietnam War',keys:{very:{region_asia:4,english_language:2},somewhat:{region_asia:2,english_language:1},not:{}}},{text:'The Americas',subtext:'Aztec and Inca empires, US independence and civil rights, Latin American revolutions',keys:{very:{region_latin_america:4,english_language:2},somewhat:{region_latin_america:2,english_language:1},not:{}}},{text:'Sub-Saharan Africa',subtext:'Ancient kingdoms, transatlantic slavery, colonialism, independence movements',keys:{very:{region_subsaharan_africa:4,english_language:2},somewhat:{region_subsaharan_africa:2,english_language:1},not:{}}},{text:'North Africa and the Middle East',subtext:'Islamic Golden Age, Ottoman Empire, colonialism, Arab Spring, Palestine',keys:{very:{region_maghreb_middle_east:4,english_language:2},somewhat:{region_maghreb_middle_east:2,english_language:1},not:{}}}],snippet:'<strong>Did you know?</strong> VU is one of the few Dutch universities where you can study both European AND global history in depth. Our faculty includes specialists from every continent, and we examine how regions connect rather than studying them in isolation.'},{type:'ternary',title:'What would you look forward to doing as a history student?',instruction:'For each approach, select: Very Interested / Somewhat / Not Really',options:[{text:'Reading historical debates and analyzing different interpretations',subtext:'Understanding how historians disagree, developing your own arguments',keys:{very:{dutch_language:1,region_netherlands_westeurope:1},somewhat:{},not:{}}},{text:'Connecting past events to current news and contemporary issues',subtext:'Using history to understand today\'s politics, conflicts, and social movements',keys:{very:{english_language:2,theme_colonial:1},somewhat:{english_language:1},not:{}}},{text:'Working with data, maps, and statistics from the past',subtext:'Analyzing census records, trade data, demographic patterns',keys:{very:{region_asia:1,english_language:1},somewhat:{},not:{}}},{text:'Conducting interviews and collecting oral histories',subtext:'Recording personal stories, community memories, lived experiences',keys:{very:{region_latin_america:2,region_subsaharan_africa:1,english_language:1},somewhat:{region_latin_america:1},not:{}}},{text:'Examining objects, images, and physical sources in museums and archives',subtext:'Working with paintings, artifacts, photographs, material culture',keys:{very:{region_netherlands_westeurope:2,region_mediterranean_easteurope:1},somewhat:{region_netherlands_westeurope:1},not:{}}},{text:'Linking history with international relations and political science',subtext:'Understanding how historical patterns shape diplomacy, conflict, global politics',keys:{very:{english_language:4},somewhat:{english_language:2},not:{dutch_language:1}}}],snippet:'<strong>Did you know?</strong> In Year 2, you\'ll gain hands-on experience with all these methods: Oral History (conducting interviews), History by Numbers (quantitative analysis), and Digital Sources (computational approaches). Amsterdam\'s world-class archives—including the National Archives and International Institute of Social History—are right at your doorstep for research.'},{type:'ranking',title:'What kind of career paths interest you after graduation?',instruction:'Rank all 6 options from most (1) to least (6) interesting',options:[{text:'Teaching history or working in education',subtext:'Secondary schools, universities, educational programs',keys:{1:{dutch_language:2,region_netherlands_westeurope:1},2:{dutch_language:2,region_netherlands_westeurope:1},3:{dutch_language:2,region_netherlands_westeurope:1},4:{dutch_language:1},5:{dutch_language:1},6:{}}},{text:'Museums, archives, or cultural heritage work',subtext:'Curating exhibitions, preserving historical collections, heritage sites',keys:{1:{region_netherlands_westeurope:2,region_mediterranean_easteurope:1,dutch_language:1},2:{region_netherlands_westeurope:2,region_mediterranean_easteurope:1,dutch_language:1},3:{region_netherlands_westeurope:2,region_mediterranean_easteurope:1,dutch_language:1},4:{region_netherlands_westeurope:1},5:{region_netherlands_westeurope:1},6:{}}},{text:'Journalism, media, or communications',subtext:'Writing, documentary making, public history, storytelling',keys:{1:{english_language:2,theme_colonial:1},2:{english_language:2,theme_colonial:1},3:{english_language:2,theme_colonial:1},4:{english_language:1},5:{english_language:1},6:{}}},{text:'Research and academia',subtext:'Master\'s program, PhD, becoming a historian or researcher',keys:{1:{theme_ancient:1,dutch_language:1},2:{theme_ancient:1,dutch_language:1},3:{theme_ancient:1,dutch_language:1},4:{},5:{},6:{}}},{text:'International organizations, NGOs, or government',subtext:'Policy work, diplomacy, human rights organizations, think tanks',keys:{1:{english_language:3,region_maghreb_middle_east:1},2:{english_language:3,region_maghreb_middle_east:1},3:{english_language:3,region_maghreb_middle_east:1},4:{english_language:1},5:{english_language:1},6:{}}},{text:'Still exploring different possibilities',subtext:'Keeping options open, want to discover more during my studies',keys:{1:{},2:{},3:{},4:{},5:{},6:{}}}],snippet:'<strong>Did you know?</strong> VU History graduates pursue diverse careers: teaching, museum curators, journalists at NOS and NRC, policy advisors at ministries, researchers at universities, and roles at NGOs like Amnesty International. Many also continue with master\'s programs in History, International Relations, or Heritage Studies. Your BA thesis and optional internship help you explore your path.'},{type:'mixed',title:'What\'s important to you in your studies?',instruction:'Answer each question below',options:[{type:'single',text:'Which language of instruction do you prefer?',choices:[{text:'Study in Dutch',subtext:'Lectures, seminars, and exams in Dutch',scores:{dutch_language:8,region_netherlands_westeurope:2}},{text:'Study in English',subtext:'International classroom, English-language program',scores:{english_language:8}},{text:'No strong preference',subtext:'Either language works for me',scores:{}}]},{type:'ternary',text:'Opportunity to study abroad for a semester',subtext:'Exchange programs in Europe, Asia, Latin America, or North America',keys:{important:{english_language:2,region_asia:1,region_latin_america:1},neutral:{english_language:1},not:{}}},{type:'ternary',text:'Completing an internship during your Bachelor',subtext:'Museums, archives, NGOs, media organizations, government institutions',keys:{important:{region_netherlands_westeurope:1},neutral:{},not:{}}},{type:'ternary',text:'Connecting history with international relations and politics',subtext:'Understanding how historical patterns shape current global affairs',keys:{important:{english_language:4},neutral:{english_language:2},not:{dutch_language:1}}}],snippet:'<strong>Did you know?</strong> At VU, you have real flexibility: study abroad for a semester at partner universities worldwide, complete an internship at institutions like the Rijksmuseum or Amnesty International, or dive straight into research. In your third year, you\'ll write a BA thesis on ANY topic you choose—from medieval trade networks to contemporary climate activism—supervised by faculty who are experts in your area of interest.'}];
+        
+        function startQuiz(){document.getElementById('intro-screen').style.display='none';document.getElementById('quiz-screen').style.display='block';renderQuestion(0)}
+        
+        function renderQuestion(idx){const q=questions[idx],container=document.getElementById('questions-container');let html=`<h2 class="question-title">${q.title}</h2><p class="question-instruction">${q.instruction}</p>`;if(q.type==='ranking'){q.options.forEach((opt,i)=>{html+=`<div class="option ranking-option"><select class="rank-select" data-option="${i}" onchange="validateRanking()"><option value="">-</option>${Array.from({length:q.options.length},(_,n)=>`<option value="${n+1}">${n+1}</option>`).join('')}</select><div><div>${opt.text}</div>${opt.subtext?`<div style="font-size:14px;color:#64748b;font-style:italic;margin-top:5px;">${opt.subtext}</div>`:''}</div></div>`})}else if(q.type==='multiple'){q.options.forEach((opt,i)=>{html+=`<div class="option" onclick="selectMultiple(${i})"><input type="radio" name="q${idx}" id="q${idx}_${i}"><label for="q${idx}_${i}">${opt.text}</label></div>`})}else if(q.type==='mixed'){q.options.forEach((opt,optIdx)=>{if(opt.type==='single'){html+=`<div style="margin-bottom:30px;"><p style="font-weight:600;color:#0077B3;margin-bottom:15px;">${opt.text}</p>`;opt.choices.forEach((choice,i)=>{html+=`<div class="option" onclick="selectMixedSingle(${optIdx},${i})"><input type="radio" name="q${idx}_opt${optIdx}" id="q${idx}_opt${optIdx}_${i}" style="margin-right:10px;"><label for="q${idx}_opt${optIdx}_${i}" style="cursor:pointer;"><div style="font-weight:500;">${choice.text}</div>${choice.subtext?`<div style="font-size:14px;color:#64748b;font-style:italic;margin-top:5px;">${choice.subtext}</div>`:''}</label></div>`});html+=`</div>`}else if(opt.type==='ternary'){const btnLabels=['Very Important','Somewhat','Not Important'];html+=`<div class="option ternary-option"><div class="ternary-text">${opt.text}${opt.subtext?`<div style="font-size:14px;color:#64748b;font-style:italic;margin-top:5px;">${opt.subtext}</div>`:''}</div><div class="ternary-buttons"><button class="ternary-btn" onclick="selectMixedTernary(${optIdx},'important')">${btnLabels[0]}</button><button class="ternary-btn" onclick="selectMixedTernary(${optIdx},'neutral')">${btnLabels[1]}</button><button class="ternary-btn" onclick="selectMixedTernary(${optIdx},'not')">${btnLabels[2]}</button></div></div>`}})}else if(q.type==='ternary'){const btnLabels=q.instruction.includes('Important')?['Very Important','Somewhat','Not Important']:['Very Interested','Somewhat','Not Really'];q.options.forEach((opt,i)=>{html+=`<div class="option ternary-option"><div class="ternary-text">${opt.text}${opt.subtext?`<div style="font-size:14px;color:#64748b;font-style:italic;margin-top:5px;">${opt.subtext}</div>`:''}</div><div class="ternary-buttons"><button class="ternary-btn" onclick="selectTernary(${i},'very','important')">${btnLabels[0]}</button><button class="ternary-btn" onclick="selectTernary(${i},'somewhat','neutral')">${btnLabels[1]}</button><button class="ternary-btn" onclick="selectTernary(${i},'not','not')">${btnLabels[2]}</button></div></div>`})}if(q.snippet){html+=`<div class="did-you-know" id="snippet-${idx}">${q.snippet}</div>`}container.innerHTML=html;if(userAnswers[idx])restoreAnswer(idx);updateProgress();updateButtons()}
+        
+        function selectMixedSingle(optIdx,choiceIdx){if(!userAnswers[currentQuestion])userAnswers[currentQuestion]={type:'mixed',value:{}};userAnswers[currentQuestion].value[optIdx]={type:'single',choice:choiceIdx};document.getElementById(`q${currentQuestion}_opt${optIdx}_${choiceIdx}`).checked=true;validateMixed()}
+        
+        function selectMixedTernary(optIdx,val){const btns=document.querySelectorAll(`.option:nth-child(${optIdx+2}) .ternary-btn`);btns.forEach(b=>b.classList.remove('active'));event.target.classList.add('active');if(!userAnswers[currentQuestion])userAnswers[currentQuestion]={type:'mixed',value:{}};userAnswers[currentQuestion].value[optIdx]={type:'ternary',value:val};validateMixed()}
+        
+        function validateMixed(){const q=questions[currentQuestion];const allAnswered=q.options.every((_,i)=>userAnswers[currentQuestion]&&userAnswers[currentQuestion].value[i]);document.getElementById('next-btn').disabled=!allAnswered}
+        
+        function selectMultiple(i){document.getElementById(`q${currentQuestion}_${i}`).checked=true;userAnswers[currentQuestion]={type:'multiple',value:i};document.getElementById('next-btn').disabled=false}
+        
+        function selectTernary(optIdx,c1,c2){const btns=document.querySelectorAll(`.option:nth-child(${optIdx+3}) .ternary-btn`);btns.forEach(b=>b.classList.remove('active'));event.target.classList.add('active');if(!userAnswers[currentQuestion])userAnswers[currentQuestion]={type:'ternary',value:{}};userAnswers[currentQuestion].value[optIdx]=c1||c2;const allDone=questions[currentQuestion].options.every((_,i)=>userAnswers[currentQuestion].value[i]);document.getElementById('next-btn').disabled=!allDone}
+        
+        function validateRanking(){const selects=document.querySelectorAll('.rank-select'),vals=Array.from(selects).map(s=>s.value).filter(v=>v),valid=vals.length===questions[currentQuestion].options.length&&new Set(vals).size===vals.length;document.getElementById('next-btn').disabled=!valid;if(valid)userAnswers[currentQuestion]={type:'ranking',value:Array.from(selects).map(s=>parseInt(s.value))}}
+        
+        function restoreAnswer(idx){const ans=userAnswers[idx];if(!ans)return;if(ans.type==='ranking'){document.querySelectorAll('.rank-select').forEach((s,i)=>s.value=ans.value[i])}else if(ans.type==='multiple'){const r=document.getElementById(`q${idx}_${ans.value}`);if(r)r.checked=true}else if(ans.type==='ternary'){Object.keys(ans.value).forEach(i=>{const btns=document.querySelectorAll(`.option:nth-child(${parseInt(i)+3}) .ternary-btn`);btns.forEach(b=>{if(b.textContent.toLowerCase().includes(ans.value[i]))b.classList.add('active')})})}else if(ans.type==='mixed'){Object.keys(ans.value).forEach(optIdx=>{const optAns=ans.value[optIdx];if(optAns.type==='single'){const radio=document.getElementById(`q${idx}_opt${optIdx}_${optAns.choice}`);if(radio)radio.checked=true}else if(optAns.type==='ternary'){const btns=document.querySelectorAll(`.option:nth-child(${parseInt(optIdx)+2}) .ternary-btn`);btns.forEach(b=>{if(b.textContent.toLowerCase().includes(optAns.value))b.classList.add('active')})}})}document.getElementById('next-btn').disabled=false}
+        
+        function nextQuestion(){const q=questions[currentQuestion];if(q.snippet){const snippet=document.getElementById(`snippet-${currentQuestion}`);if(snippet&&!snippet.classList.contains('show')){snippet.classList.add('show');document.getElementById('next-btn').textContent='Continue';return}}calculateScore(currentQuestion);currentQuestion++;if(currentQuestion<questions.length){renderQuestion(currentQuestion);document.getElementById('next-btn').textContent='Next'}else{showResults()}}
+        
+        function previousQuestion(){if(currentQuestion>0){currentQuestion--;renderQuestion(currentQuestion)}}
+        
+        function updateProgress(){document.getElementById('progress-fill').style.width=((currentQuestion+1)/questions.length*100)+'%';document.getElementById('progress-text').textContent=`Question ${currentQuestion+1} of ${questions.length}`}
+        
+        function updateButtons(){document.getElementById('back-btn').style.display=currentQuestion>0?'block':'none';document.getElementById('next-btn').disabled=!userAnswers[currentQuestion]}
+        
+                function calculateScore(qIdx){const q=questions[qIdx],ans=userAnswers[qIdx];if(ans.type==='ranking'){ans.value.forEach((rank,optIdx)=>{const opt=q.options[optIdx];if(opt.key){const pts=rank===1?4:rank===2?3:rank===3?2:rank===4?1:0;scores[opt.key]+=pts;if(pts>0&&opt.key!=='region_netherlands_westeurope'&&opt.key!=='region_mediterranean_easteurope'){scores.english_language+=rank<=2?1:0}if(pts>0&&(opt.key==='region_netherlands_westeurope'||opt.key==='region_mediterranean_easteurope')){scores.dutch_language+=rank<=2?1:0}}if(opt.keys&&opt.keys[rank]){Object.keys(opt.keys[rank]).forEach(k=>scores[k]+=opt.keys[rank][k])}})}else if(ans.type==='multiple'){const s=q.options[ans.value].scores;Object.keys(s).forEach(k=>scores[k]+=s[k])}else if(ans.type==='ternary'){Object.keys(ans.value).forEach(optIdx=>{const keys=q.options[optIdx].keys[ans.value[optIdx]];if(keys)Object.keys(keys).forEach(k=>scores[k]+=keys[k])})}else if(ans.type==='mixed'){Object.keys(ans.value).forEach(optIdx=>{const optAns=ans.value[optIdx];const opt=q.options[optIdx];if(optAns.type==='single'){const choice=opt.choices[optAns.choice];if(choice.scores)Object.keys(choice.scores).forEach(k=>scores[k]+=choice.scores[k])}else if(optAns.type==='ternary'){const keys=opt.keys[optAns.value];if(keys)Object.keys(keys).forEach(k=>scores[k]+=keys[k])}})}}
+        
+        function showResults(){document.getElementById('quiz-screen').style.display='none';const totalEur=scores.region_netherlands_westeurope+scores.region_mediterranean_easteurope+scores.dutch_language,totalGlobal=scores.region_asia+scores.region_latin_america+scores.region_subsaharan_africa+scores.region_maghreb_middle_east+scores.english_language,track=totalGlobal>totalEur+3?'HIS':totalEur>totalGlobal+3?'Geschiedenis':'Both';const languageChoice=userAnswers[4]?.value[0]?.choice;const choseDutch=languageChoice===0;const choseEnglish=languageChoice===1;const hasContradiction=(track==='HIS'&&choseDutch)||(track==='Geschiedenis'&&choseEnglish);const ranked=[{score:scores.region_asia,data:electives.asia},{score:scores.region_latin_america,data:electives.latin_america},{score:scores.region_subsaharan_africa,data:electives.subsaharan_africa},{score:scores.region_maghreb_middle_east/2,data:electives.maghreb},{score:scores.region_maghreb_middle_east/2,data:electives.middle_east}].sort((a,b)=>b.score-a.score);const careerRanking=userAnswers[3]?.value||[];const topCareer=careerRanking.indexOf(1);const secondCareer=careerRanking.indexOf(2);const careerOptions=['teaching','heritage','journalism','research','international','exploring'];const topCareerChoice=topCareer>=0?careerOptions[topCareer]:'';const secondCareerChoice=secondCareer>=0?careerOptions[secondCareer]:'';const careerTexts={teaching:'<p style="line-height:1.8; margin-bottom:15px;"><strong>Teaching:</strong> VU History graduates teach at secondary schools across the Netherlands. After your BA, you can pursue a Master in Education to become a certified history teacher.</p>',heritage:'<p style="line-height:1.8; margin-bottom:15px;"><strong>Museums & Heritage:</strong> VU students complete internships at institutions like the Rijksmuseum, Anne Frank House, and National Archives. Alumni work as curators, archivists, and heritage professionals.</p>',journalism:'<p style="line-height:1.8; margin-bottom:15px;"><strong>Journalism & Media:</strong> VU History graduates work at NOS, NRC, and other media organizations. The analytical and writing skills you develop are exactly what journalism needs.</p>',research:'<p style="line-height:1.8; margin-bottom:15px;"><strong>Research & Academia:</strong> Many VU graduates continue with master\'s programs in History, International Relations, or Heritage Studies and pursue PhDs.</p>',international:'<p style="line-height:1.8; margin-bottom:15px;"><strong>International Organizations:</strong> VU alumni work at NGOs like Amnesty International, UN organizations, government ministries, and think tanks. The HIS programme particularly prepares you for this path with courses like <em>International Relations from Below</em> (Year 1) and <em>International Organizations and Social Movements</em> (Year 3).</p>',exploring:'<p style="line-height:1.8; margin-bottom:15px;"><strong>Still Exploring:</strong> Many students discover their path during their studies through internships, study abroad experiences, and writing their BA thesis on topics that fascinate them.</p>'};let html=`<div class="results-header"><h2>${track==='Both'?'You\'d Thrive in Either Track!':'Your Recommended Track:'}</h2>${track!=='Both'?`<h2 style="font-size:36px; margin-top:15px;">${track==='HIS'?'History and International Studies':'Geschiedenis'}</h2>`:''}</div>`;if(hasContradiction&&track==='HIS'&&choseDutch){html+=`<div class="info-box" style="margin: 25px; padding: 20px; background: #fff3cd; border-left: 4px solid #f59e0b;"><p style="font-size: 17px; margin-bottom: 15px; font-weight: 600; color: #0d1b2a;">A note about language:</p><p style="line-height: 1.8; margin-bottom: 12px;">Based on your interests in global regions and transnational connections, <strong>History and International Studies (HIS)</strong> would be an excellent fit. However, HIS is taught entirely in English.</p><p style="line-height: 1.8;">Since you prefer studying in Dutch, you might want to consider <strong>Geschiedenis</strong> instead. While it focuses more on European history, you\'ll still encounter global topics, and the programme examines Europe\'s role in shaping the modern world through colonialism, migration, and cultural exchange.</p><p style="line-height: 1.8; margin-top:12px; font-style:italic;">Note: Both tracks teach the same research methods and skills—the main differences are regional focus and language of instruction.</p></div>`}else if(hasContradiction&&track==='Geschiedenis'&&choseEnglish){html+=`<div class="info-box" style="margin: 25px; padding: 20px; background: #dbeafe; border-left: 4px solid #3b82f6;"><p style="font-size: 17px; margin-bottom: 15px; font-weight: 600; color: #0d1b2a;">A note about language:</p><p style="line-height: 1.8; margin-bottom: 12px;">Based on your interests in European history, <strong>Geschiedenis</strong> would be an excellent fit. While this programme is primarily taught in Dutch, several courses in Year 1 are offered in English, and you have flexibility to choose English-taught electives throughout your degree.</p><p style="line-height: 1.8;">Alternatively, if studying entirely in English is essential for you, consider <strong>History and International Studies (HIS)</strong>. This programme integrates European history within a global framework and is taught completely in English.</p><p style="line-height: 1.8; margin-top:12px; font-style:italic;">Note: Both tracks teach the same research methods and skills. Geschiedenis includes English-language courses, while HIS offers European history within a global framework.</p></div>`}if(track==='HIS'){let reasons=[];if(scores.english_language>scores.dutch_language+3&&!choseDutch)reasons.push('your preference for studying in English');if(scores.region_asia>=4||scores.region_latin_america>=4)reasons.push('your strong interest in global regions');if(scores.theme_colonial>=3)reasons.push('your focus on colonial histories');const reasonText=reasons.length>0?reasons.join(', '):'your global perspective';html+=`<p style="font-size: 17px; line-height: 1.8; margin-bottom: 20px; padding: 0 25px;">Based on ${reasonText}, <strong>History and International Studies</strong> is an excellent fit. This English-taught programme integrates historical analysis with international relations, examining how local communities interact with global processes from multiple, non-Eurocentric perspectives.</p><div class="results-section" style="padding: 0 25px;"><h3>Your Specialized Regional Electives (Choose 2 in Year 2)</h3><div class="course-card"><strong>Highly Recommended: ${ranked[0].data.name}</strong><p style="margin-top:10px;">${ranked[0].data.desc}</p></div><div class="course-card"><strong>Also Recommended: ${ranked[1].data.name}</strong><p style="margin-top:10px;">${ranked[1].data.desc}</p></div></div><div style="background: #e0f2fe; padding: 25px; border-radius: 8px; margin: 30px 25px; line-height: 1.8;"><h3 style="color: #0077B3; margin-bottom: 15px;">Why History and International Studies at VU Amsterdam?</h3><p style="margin-bottom:12px;"><strong>🏆 Quality:</strong> In 2021, our BA programme was rated the second highest History programme in the Netherlands (Keuzegids).</p><p style="margin-bottom:12px;"><strong>👥 Small-scale:</strong> Study in seminars of 15-20 students with personal attention from internationally recognized faculty from around the world.</p><p style="margin-bottom:12px;"><strong>🌍 Amsterdam:</strong> Major archives and research institutes at your doorstep—National Archives, International Institute of Social History, Rijksmuseum, and more.</p><p style="margin-bottom:12px;"><strong>🎯 Flexibility:</strong> Study abroad for a semester at partner universities worldwide, complete internships, and write your BA thesis on ANY topic you choose, supervised by faculty experts.</p><p style="margin-top:15px;"><strong>What both tracks share:</strong> Whether you choose Geschiedenis or HIS, you'll develop the same core historical skills—evaluating sources, conducting research, presenting findings in writing and speech. Both tracks include research seminars where you'll formulate research questions, engage with historiographical debates, and complete your own BA thesis. The difference is primarily in regional focus (European vs. global) and language of instruction.</p></div>`}else if(track==='Geschiedenis'){let reasons=[];if(scores.dutch_language>scores.english_language+3&&!choseEnglish)reasons.push('your preference for studying in Dutch');if(scores.region_netherlands_westeurope>=8)reasons.push('your strong interest in Dutch and Western European history');const reasonText=reasons.length>0?reasons.join(', '):'your interest in European history';html+=`<p style="font-size: 17px; line-height: 1.8; margin-bottom: 20px; padding: 0 25px;">Based on ${reasonText}, <strong>Geschiedenis</strong> is an excellent fit. This Dutch-taught programme offers a deep, critical examination of the historical forces that shaped the modern world, with particular attention to the Netherlands and Europe's complex role as a driver of global modernity.</p><div class="results-section" style="padding: 0 25px;"><h3>Your Core Thematic Courses (Year 2)</h3><p style="margin-bottom:15px; color:#64748b;">Geschiedenis focuses on the legacy of European history through three core courses:</p><div class="course-card"><strong>Religie en Natievorming</strong><p style="margin-top:10px;">How religions shaped European nations</p></div><div class="course-card"><strong>Democratische Revoluties</strong><p style="margin-top:10px;">Revolutionary movements from America and France to global transformations</p></div><div class="course-card"><strong>Holocaust & Genocide</strong><p style="margin-top:10px;">Comparative genocide studies</p></div><p style="margin-top:15px; line-height:1.8; color:#64748b;">You'll also have <strong>free choice electives</strong> to broaden your studies—choose from minors and courses from related programmes to develop your own specialization.</p></div><div style="background: #e0f2fe; padding: 25px; border-radius: 8px; margin: 30px 25px; line-height: 1.8;"><h3 style="color: #0077B3; margin-bottom: 15px;">Why Geschiedenis at VU Amsterdam?</h3><p style="margin-bottom:12px;"><strong>🏆 Quality:</strong> In 2021, our BA programme was rated the second highest History programme in the Netherlands (Keuzegids).</p><p style="margin-bottom:12px;"><strong>👥 Small-scale:</strong> Study in seminars of 15-20 students with personal attention from internationally recognized faculty from around the world.</p><p style="margin-bottom:12px;"><strong>🌍 Amsterdam:</strong> Major archives and research institutes at your doorstep—National Archives, International Institute of Social History, Rijksmuseum, and more.</p><p style="margin-bottom:12px;"><strong>🎯 Flexibility:</strong> Study abroad for a semester at partner universities worldwide, complete internships, and write your BA thesis on ANY topic you choose, supervised by faculty experts.</p><p style="margin-top:15px;"><strong>What both tracks share:</strong> Whether you choose Geschiedenis or HIS, you'll develop the same core historical skills—evaluating sources, conducting research, presenting findings in writing and speech. Both tracks include research seminars where you'll formulate research questions, engage with historiographical debates, and complete your own BA thesis. The difference is primarily in regional focus (European vs. global) and language of instruction.</p></div>`}else{html+=`<div class="info-box" style="margin-bottom: 25px; margin: 0 25px;"><p style="font-size: 17px; margin-bottom: 15px;"><strong>You're a true global historian!</strong></p><p>Your interests span both European and global histories. The choice between tracks is about learning environment (Dutch vs English) and whether you prefer structured European curriculum or flexible regional electives.</p></div><div style="background: #e0f2fe; padding: 25px; border-radius: 8px; margin: 30px 25px; line-height: 1.8;"><h3 style="color: #0077B3; margin-bottom: 15px;">Why VU History?</h3><p style="margin-bottom:12px;"><strong>🏆 Quality:</strong> In 2021, our BA programme was rated the second highest History programme in the Netherlands (Keuzegids).</p><p style="margin-bottom:12px;"><strong>👥 Small-scale:</strong> Study in seminars of 15-20 students with personal attention from internationally recognized faculty from around the world.</p><p style="margin-bottom:12px;"><strong>🌍 Amsterdam:</strong> Major archives and research institutes at your doorstep—National Archives, International Institute of Social History, Rijksmuseum, and more.</p><p style="margin-bottom:12px;"><strong>🎯 Flexibility:</strong> Study abroad for a semester at partner universities worldwide, complete internships, and write your BA thesis on ANY topic you choose, supervised by faculty experts.</p><p style="margin-top:15px;"><strong>What both tracks share:</strong> Whether you choose Geschiedenis or HIS, you'll develop the same core historical skills—evaluating sources, conducting research, presenting findings in writing and speech. Both tracks include research seminars where you'll formulate research questions, engage with historiographical debates, and complete your own BA thesis. The difference is primarily in regional focus (European vs. global) and language of instruction.</p></div>`}if(topCareerChoice&&careerTexts[topCareerChoice]){html+=`<div class="results-section" style="padding: 0 25px; margin-top: 30px;"><h3>Possible Career Paths</h3>${careerTexts[topCareerChoice]}${secondCareerChoice&&careerTexts[secondCareerChoice]?careerTexts[secondCareerChoice]:''}<p style="margin-top:15px; color:#64748b; line-height:1.8;">History graduates pursue diverse careers—the analytical, research, and communication skills you develop open many doors.</p></div>`}if(scores.theme_ancient>=5){html+=`<div class="highlight-box" style="margin: 30px 25px;"><h3>🏛️ Ancient History Pathway Available!</h3><p style="line-height:1.8; margin-bottom:12px;">Your strong interest in ancient civilizations means you can specialize through courses offered by <strong>ACASA (Amsterdam Centre for Ancient Studies and Archaeology)</strong>, a partnership between VU Amsterdam and University of Amsterdam.</p><p style="line-height:1.8; margin-bottom:12px;">Instead of the regular research seminars, you can take specialized ACASA courses developed specifically for Geschiedenis and HIS students:</p><ul style="margin-left:20px; line-height:1.8; margin-bottom:12px;"><li><strong>Politics and International Relations in Antiquity</strong></li><li><strong>Seminar Ancient History</strong></li></ul><p style="line-height:1.8;">This allows you to write your BA thesis on ancient historical topics, from Mesopotamia to ancient Greece and Rome.</p><p style="margin-top:12px;"><a href="https://acasa.uva.nl/" target="_blank" style="color:#0077B3; text-decoration:underline;">Learn more about ACASA →</a></p></div>`}html+=`<div class="next-steps" style="margin: 30px 25px;"><h3>Ready to Explore Further?</h3><p><a href="https://vu.nl/en/education/bachelor/history" target="_blank">BA Geschiedenis</a></p><p><a href="https://vu.nl/en/education/bachelor/history-and-international-studies" target="_blank">BA History and International Studies</a></p><p style="margin-top:15px;">Questions? Email us at <a href="mailto:history@vu.nl">history@vu.nl</a></p></div>`;document.getElementById('results-screen').innerHTML=html;document.getElementById('results-screen').classList.add('active')}
+    </script>
+</body>
+</html>
